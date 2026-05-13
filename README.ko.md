@@ -44,17 +44,40 @@ voice contract를 건다.
 curl -fsSL https://raw.githubusercontent.com/jeongkpa/munger-skill/main/install.sh | bash
 ```
 
-### 수동 설치
+curl로 파이프하면 onboarding이 자동 실행되지 않습니다 (stdin이 TTY가 아니므로).
+대화형 onboarding (3개 질문: 저장 경로, author wikilink, shell profile)을 실행하려면
+clone 후 install.sh를 터미널에서 실행하세요:
+
+```bash
+git clone https://github.com/jeongkpa/munger-skill ~/.claude/skills/munger
+bash ~/.claude/skills/munger/install.sh
+```
+
+설치 스크립트는 TTY를 감지하면 onboarding을 자동으로 띄웁니다. 언제든 다시 실행 가능:
+
+```bash
+bash ~/.claude/skills/munger/onboard.sh
+```
+
+### 수동 설치 (installer 스킵)
 
 ```bash
 git clone https://github.com/jeongkpa/munger-skill ~/.claude/skills/munger
 ```
 
-설치 후 Claude Code 세션에서:
+기본값으로 onboarding 없이도 작동합니다. Claude Code 세션 열고:
 
 ```
 /munger 회사 그만두고 창업해야 할까요?
 ```
+
+### Onboarding에서 묻는 것
+
+1. **Consultation 저장 위치?** 기존 Obsidian vault (Google Drive sync, iCloud Drive,
+   `~/Obsidian` 등) 자동 감지. 기본값 `~/.munger/consultations` 제공. 커스텀 절대 경로 가능.
+2. **Author wikilink** — Obsidian frontmatter용 (예: `[[Fran]]`, `[[정기]]`,
+   `[[홍길동]]`). 대괄호 없이 이름만 입력해도 자동으로 추가.
+3. **Shell profile** — env var 추가할 파일 자동 감지 (zsh / bash / fish).
 
 ---
 

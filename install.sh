@@ -80,40 +80,47 @@ EXPECTED_FILES=(
   "$TARGET_DIR/brain/00-brain-of-munger.md"
   "$TARGET_DIR/brain/_evals/canonical.md"
   "$TARGET_DIR/brain/_evals/extracted-quotes.md"
+  "$TARGET_DIR/onboard.sh"
 )
 for f in "${EXPECTED_FILES[@]}"; do
   [ -f "$f" ] || fail "Missing expected file after install: $f"
 done
+chmod +x "$TARGET_DIR/onboard.sh"
 ok "All expected files in place."
 
-# ---------- summary ----------
+# ---------- install-stage summary ----------
 echo
 printf "%s========================================%s\n" "$BOLD" "$RESET"
-printf "%s✓ /munger installed successfully%s\n"        "$BOLD$GREEN" "$RESET"
+printf "%s✓ /munger files installed%s\n"               "$BOLD$GREEN" "$RESET"
 printf "%s========================================%s\n" "$BOLD" "$RESET"
 echo
-printf "Skill location:        %s\n" "$TARGET_DIR"
-printf "Consultations saved:   %s\n" "$CONSULT_DIR"
+printf "Skill location:   %s\n" "$TARGET_DIR"
 echo
-printf "%sNext steps:%s\n" "$BOLD" "$RESET"
-echo "  1. Open a Claude Code session."
-echo "  2. Type: /munger should I quit my job and start a company?"
-echo "  3. Try the modes:"
-echo "       /munger --quick is BRK.B cheap here?"
-echo "       /munger --buffett 집을 사야 할까?"
-echo "       /munger --debate exercise ISOs and pay AMT?"
-echo "       /munger --retro       (after a few consultations)"
-echo "       /munger --eval        (after editing the brain)"
-echo
-printf "%sOptional environment variables%s (add to your ~/.zshrc or ~/.bashrc):\n" "$BOLD" "$RESET"
-echo "  export MUNGER_CONSULTATIONS=\"\$HOME/Obsidian/Munger/_consultations\"   # custom save path"
-echo "  export MUNGER_USER_LINK='[[YourName]]'                                # Obsidian author wikilink"
-echo
-printf "%sSources, license, disclaimer:%s\n" "$BOLD" "$RESET"
-echo "  $TARGET_DIR/README.md"
-echo "  $TARGET_DIR/README.ko.md (한국어)"
-echo "  $TARGET_DIR/LICENSE"
-echo
-printf "%sUpdate later:%s  cd %s && git pull\n" "$BOLD" "$RESET" "$TARGET_DIR"
-echo
-ok "Take a simple idea and take it seriously."
+
+# ---------- handoff to onboard.sh ----------
+# If stdin is a TTY (interactive shell), run onboarding right now.
+# If stdin is a pipe (curl ... | bash), skip and hint to run manually.
+if [ -t 0 ]; then
+  info "Starting interactive onboarding (3 quick questions)..."
+  echo
+  SKILL_DIR="$TARGET_DIR" bash "$TARGET_DIR/onboard.sh"
+else
+  printf "%sNext step — run onboarding to configure:%s\n" "$BOLD" "$RESET"
+  echo "  • where consultation files are saved (default / Obsidian vault / custom)"
+  echo "  • your Obsidian wikilink for the author field"
+  echo "  • shell profile to update with env vars"
+  echo
+  printf "  %sbash %s/onboard.sh%s\n" "$BOLD$CYAN" "$TARGET_DIR" "$RESET"
+  echo
+  printf "%sOr skip onboarding%s — defaults already work. Just open a Claude Code session and try:\n" "$BOLD" "$RESET"
+  echo "  /munger should I quit my job and start a company?"
+  echo
+  printf "%sSources, license, disclaimer:%s\n" "$BOLD" "$RESET"
+  echo "  $TARGET_DIR/README.md"
+  echo "  $TARGET_DIR/README.ko.md (한국어)"
+  echo "  $TARGET_DIR/LICENSE"
+  echo
+  printf "%sUpdate later:%s  cd %s && git pull\n" "$BOLD" "$RESET" "$TARGET_DIR"
+  echo
+  ok "Take a simple idea and take it seriously."
+fi

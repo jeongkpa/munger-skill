@@ -44,17 +44,42 @@ You get:
 curl -fsSL https://raw.githubusercontent.com/jeongkpa/munger-skill/main/install.sh | bash
 ```
 
-### Manual
+When piped through curl, the installer is non-interactive. To run the interactive
+onboarding (3 questions: consultation save path, author wikilink, shell profile), do
+this instead — clone first, then run install.sh in your terminal:
+
+```bash
+git clone https://github.com/jeongkpa/munger-skill ~/.claude/skills/munger
+bash ~/.claude/skills/munger/install.sh
+```
+
+The installer auto-detects a TTY and launches onboarding when present. You can also
+re-run onboarding anytime:
+
+```bash
+bash ~/.claude/skills/munger/onboard.sh
+```
+
+### Manual (skip installer entirely)
 
 ```bash
 git clone https://github.com/jeongkpa/munger-skill ~/.claude/skills/munger
 ```
 
-Then in any Claude Code session:
+Defaults already work without onboarding. Open a Claude Code session and try:
 
 ```
 /munger should I quit my job to start a company?
 ```
+
+### Onboarding will ask
+
+1. **Where to save consultations?** Auto-detects existing Obsidian vaults
+   (Google Drive sync, iCloud Drive, `~/Obsidian`, etc.), offers the default
+   `~/.munger/consultations`, or accepts a custom absolute path.
+2. **Author wikilink** for Obsidian frontmatter (e.g. `[[Fran]]`, `[[정기]]`,
+   `[[John Doe]]`). Plain names also accepted — brackets added automatically.
+3. **Shell profile** to update with env vars (auto-detects zsh / bash / fish).
 
 ---
 
