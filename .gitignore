@@ -1,0 +1,40 @@
+# Personal consultation outputs (created at runtime, never committed)
+_consultations/
+consultations/
+*.consultation.md
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files from sed/in-place edits
+*.bak
+
+# OS / temp
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Node / build artifacts (in case anyone adds tooling later)
+node_modules/
+dist/
+build/
+*.log
+
+# Python (if any future tooling)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Personal scratch
+SCRATCH.md
+TODO.local.md
